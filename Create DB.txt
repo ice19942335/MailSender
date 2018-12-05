@@ -1,0 +1,28 @@
+
+DB VERSION -  Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False
+DB NAME    -  MailsAndSenders
+
+
+
+CREATE TABLE [dbo].[EmailRecipient] (
+    [Id]      INT            IDENTITY (1, 1) NOT NULL,
+    [Email]   NVARCHAR (MAX) NOT NULL,
+    [Name]    NVARCHAR (MAX) NULL,
+    [Address] NVARCHAR (MAX) NULL,
+    CONSTRAINT [PK_EmailRecipient_Id] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+CREATE TABLE [dbo].[EmailSender] (
+    [Id]    INT            IDENTITY (1, 1) NOT NULL,
+    [Email] NVARCHAR (MAX) NOT NULL,
+    [Hash]  NVARCHAR (MAX) NOT NULL,
+    CONSTRAINT [PK_EmailSender_Id] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+CREATE TABLE [dbo].[EmailSmtp] (
+    [Id]         INT            IDENTITY (1, 1) NOT NULL,
+    [SmtpServer] NVARCHAR (MAX) NOT NULL,
+    [Port]       NVARCHAR (MAX) NOT NULL,
+    CONSTRAINT [PK_EmailSmtp_Id] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
