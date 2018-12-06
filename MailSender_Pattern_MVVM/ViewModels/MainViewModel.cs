@@ -379,7 +379,7 @@ namespace MailSender_Pattern_MVVM.ViewModels
                 Int32.Parse(SelectedEmailSmtp.Port));
 
             await sender.SendMailsAsync(EmailRecipients);
-            MessageBox.Show("E-mail dending compleated");
+            MessageBox.Show("E-mail sending compleated");
         }
         /// <summary>
         /// Asunc method saying to send message text to current "EmailRecipientInfo" property
@@ -421,7 +421,7 @@ namespace MailSender_Pattern_MVVM.ViewModels
             recipientsColl.Add(EmailRecipientInfo);
 
             await sender.SendMailsAsync(recipientsColl);
-            MessageBox.Show("E-mail dending compleated");
+            MessageBox.Show("E-mail sending compleated");
         }
         /// <summary>
         /// Saying to send mail Scheduled to list of email in "EmailSenders" property
@@ -468,7 +468,7 @@ namespace MailSender_Pattern_MVVM.ViewModels
                 Int32.Parse(SelectedEmailSmtp.Port));
 
             await sender.SendMailsAsyncScheduled(EmailRecipients, SelectedSchedulerDateTime);
-            MessageBox.Show("E-mail dending compleated");
+            MessageBox.Show("E-mail sending compleated");
         }
         #endregion SendMethod
 
