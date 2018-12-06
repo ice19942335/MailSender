@@ -8,11 +8,11 @@ namespace MailSender_Pattern_MVVM.Service
     public class EmailSmtpDataAccessService : IEmailSmtpDataAccessService
     {
         //Field
-        private readonly EmailSmtpDataContext _emailSmtpDataContext;
+        private readonly DatabaseContainer _emailSmtpDataContext;
         //Constructor
         public EmailSmtpDataAccessService()
         {
-            _emailSmtpDataContext = new EmailSmtpDataContext();
+            _emailSmtpDataContext = new DatabaseContainer();
         }
         
         /// <summary>
@@ -24,8 +24,8 @@ namespace MailSender_Pattern_MVVM.Service
         {
             try
             {
-                _emailSmtpDataContext.EmailSmtps.InsertOnSubmit(emailSmtp);
-                _emailSmtpDataContext.SubmitChanges();
+                _emailSmtpDataContext.EmailSmtps.Add(emailSmtp);
+                _emailSmtpDataContext.SaveChanges();
                 return true;
             }
             catch (Exception e)
@@ -44,8 +44,8 @@ namespace MailSender_Pattern_MVVM.Service
             try
             {
                 _emailSmtpDataContext.EmailSmtps.Attach(emailSmtp);
-                _emailSmtpDataContext.EmailSmtps.DeleteOnSubmit(emailSmtp);
-                _emailSmtpDataContext.SubmitChanges();
+                _emailSmtpDataContext.EmailSmtps.Remove(emailSmtp);
+                _emailSmtpDataContext.SaveChanges();
                 return true;
             }
             catch (Exception e)
@@ -66,7 +66,7 @@ namespace MailSender_Pattern_MVVM.Service
                 EmailSmtp nEmailSmtp = _emailSmtpDataContext.EmailSmtps.Single(e => e.Id == emailSmtp.Id);
                 nEmailSmtp.SmtpServer = emailSmtp.SmtpServer;
                 nEmailSmtp.Port = emailSmtp.Port;
-                _emailSmtpDataContext.SubmitChanges();
+                _emailSmtpDataContext.SaveChanges();
                 return true;
             }
             catch (Exception e)

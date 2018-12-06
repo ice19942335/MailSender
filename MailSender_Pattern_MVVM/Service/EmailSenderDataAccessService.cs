@@ -10,13 +10,13 @@ namespace MailSender_Pattern_MVVM.Service
         /// <summary>
         /// Class fields
         /// </summary>
-        private readonly EmailsSenderDataContext _emailSendersDataContext;
+        private readonly DatabaseContainer _emailSendersDataContext;
         /// <summary>
         /// Constructor without parametrs
         /// </summary>
         public EmailSenderDataAccessService()
         {
-            _emailSendersDataContext = new EmailsSenderDataContext();
+            _emailSendersDataContext = new DatabaseContainer();
         }
         /// <summary>
         /// Creating new record EmailSender in DB
@@ -27,8 +27,8 @@ namespace MailSender_Pattern_MVVM.Service
         {
             try
             {
-                _emailSendersDataContext.EmailSenders.InsertOnSubmit(email);
-                _emailSendersDataContext.SubmitChanges();
+                _emailSendersDataContext.EmailSenders.Add(email);
+                _emailSendersDataContext.SaveChanges();
                 return email.Id;
             }
             catch (Exception e)
@@ -47,8 +47,8 @@ namespace MailSender_Pattern_MVVM.Service
             try
             {
                 _emailSendersDataContext.EmailSenders.Attach(email);
-                _emailSendersDataContext.EmailSenders.DeleteOnSubmit(email);
-                _emailSendersDataContext.SubmitChanges();
+                _emailSendersDataContext.EmailSenders.Remove(email);
+                _emailSendersDataContext.SaveChanges();
                 return true;
             }
             catch (Exception e)
@@ -69,7 +69,7 @@ namespace MailSender_Pattern_MVVM.Service
                 EmailSender nEmail = _emailSendersDataContext.EmailSenders.Single(e => e.Id == email.Id);
                 nEmail.Email = email.Email;
                 nEmail.Hash = email.Hash;
-                _emailSendersDataContext.SubmitChanges();
+                _emailSendersDataContext.SaveChanges();
                 return true;
             }
             catch (Exception e)

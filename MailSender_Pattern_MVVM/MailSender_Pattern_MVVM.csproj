@@ -47,13 +47,22 @@
     <Reference Include="DevExpress.Mvvm.UI, Version=18.2.0.0, Culture=neutral, PublicKeyToken=382ad28f6ae31f30, processorArchitecture=MSIL">
       <HintPath>..\packages\DevExpressMvvm.18.2.3\lib\net452\DevExpress.Mvvm.UI.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="PropertyChanged, Version=2.6.0.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
       <HintPath>..\packages\PropertyChanged.Fody.2.6.0\lib\net452\PropertyChanged.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -91,26 +100,35 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="DB_Elements\EmailSmtp.designer.cs">
+    <Compile Include="DB_Elements\Database.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>EmailSmtp.dbml</DependentUpon>
+      <DependentUpon>Database.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB_Elements\Database.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB_Elements\Database.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Database.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DB_Elements\EmailRecipient.cs">
+      <DependentUpon>Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB_Elements\EmailSender.cs">
+      <DependentUpon>Database.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB_Elements\EmailSmtp.cs">
+      <DependentUpon>Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Helpers\RichTextBoxHelper.cs" />
     <Compile Include="Models\RecipientsModel.cs" />
     <Compile Include="Models\SmtpModel.cs" />
     <Compile Include="Service\EmailRecipientDataAccessService.cs" />
     <Compile Include="Service\EmailSenderDataAccessService.cs" />
-    <Compile Include="DB_Elements\EmailRecipient.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EmailRecipient.dbml</DependentUpon>
-    </Compile>
-    <Compile Include="DB_Elements\EmailSender.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EmailSender.dbml</DependentUpon>
-    </Compile>
     <Compile Include="Models\SendersModel.cs" />
     <Compile Include="Service\EmailSendServiceClass.cs" />
     <Compile Include="Service\IEmailRecipientDataAccessService.cs" />
@@ -151,34 +169,17 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="DB_Elements\EmailRecipient.dbml.layout">
-      <DependentUpon>EmailRecipient.dbml</DependentUpon>
-    </None>
-    <None Include="DB_Elements\EmailSender.dbml.layout">
-      <DependentUpon>EmailSender.dbml</DependentUpon>
-    </None>
-    <None Include="DB_Elements\EmailSmtp.dbml.layout">
-      <DependentUpon>EmailSmtp.dbml</DependentUpon>
+    <EntityDeploy Include="DB_Elements\Database.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Database.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DB_Elements\Database.edmx.diagram">
+      <DependentUpon>Database.edmx</DependentUpon>
     </None>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="DB_Elements\EmailRecipient.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>EmailRecipient.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="DB_Elements\EmailSender.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>EmailSender.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="DB_Elements\EmailSmtp.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>EmailSmtp.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -199,6 +200,7 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CodePasswordDLL\CodePasswordDLL.csproj">
@@ -209,6 +211,19 @@
       <Project>{38184CA7-15ED-46E8-A1FC-111B12A086FA}</Project>
       <Name>MVVM_CLEAR</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DB_Elements\Database.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Database.Context.cs</LastGenOutput>
+      <DependentUpon>Database.edmx</DependentUpon>
+    </Content>
+    <Content Include="DB_Elements\Database.edmx.sql" />
+    <Content Include="DB_Elements\Database.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Database.cs</LastGenOutput>
+      <DependentUpon>Database.edmx</DependentUpon>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.3.3.2\build\Fody.targets" Condition="Exists('..\packages\Fody.3.3.2\build\Fody.targets')" />

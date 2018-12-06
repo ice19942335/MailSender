@@ -1,11 +1,11 @@
-﻿using System.Linq;
+﻿using System.Data.Entity;
 using MailSender_Pattern_MVVM.DB_Elements;
 
 namespace MailSender_Pattern_MVVM.Models
 {
     public class SendersModel
     {
-        private readonly EmailsSenderDataContext _emailSendersDataContext = new EmailsSenderDataContext();
-        public IQueryable<EmailSender> SendersEmails => from q in _emailSendersDataContext.EmailSenders select q;
+        private readonly DatabaseContainer _container = new DatabaseContainer();
+        public DbSet<EmailSender> SendersEmails => _container.EmailSenders;
     }
 }

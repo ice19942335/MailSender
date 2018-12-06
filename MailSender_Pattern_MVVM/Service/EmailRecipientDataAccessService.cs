@@ -11,13 +11,13 @@ namespace MailSender_Pattern_MVVM.Service
         /// <summary>
         /// Class fields
         /// </summary>
-        private readonly EmailRecipientDataContext _emailRecipientDataContext;
+        private readonly DatabaseContainer _emailRecipientDataContext;
         /// <summary>
         /// Constructor without parametrs
         /// </summary>
         public EmailRecipientDataAccessService()
         {
-            _emailRecipientDataContext = new EmailRecipientDataContext();
+            _emailRecipientDataContext = new DatabaseContainer();
         }
         /// <summary>
         /// Creating new EmailRecipient record in DB
@@ -36,8 +36,8 @@ namespace MailSender_Pattern_MVVM.Service
                     return false;
                 }
 
-                _emailRecipientDataContext.EmailRecipients.InsertOnSubmit(emailRecipient);
-                _emailRecipientDataContext.SubmitChanges();
+                _emailRecipientDataContext.EmailRecipients.Add(emailRecipient);
+                _emailRecipientDataContext.SaveChanges();
                 return true;
             }
             catch (Exception e)
@@ -56,8 +56,8 @@ namespace MailSender_Pattern_MVVM.Service
             try
             {
                 _emailRecipientDataContext.EmailRecipients.Attach(emailRecipient);
-                _emailRecipientDataContext.EmailRecipients.DeleteOnSubmit(emailRecipient);
-                _emailRecipientDataContext.SubmitChanges();
+                _emailRecipientDataContext.EmailRecipients.Remove(emailRecipient);
+                _emailRecipientDataContext.SaveChanges();
                 return true;
             }
             catch (Exception e)
@@ -79,7 +79,7 @@ namespace MailSender_Pattern_MVVM.Service
                 nEmailSmtp.Email = emailRecipient.Email;
                 nEmailSmtp.Name = emailRecipient.Name;
                 nEmailSmtp.Address = emailRecipient.Address;
-                _emailRecipientDataContext.SubmitChanges();
+                _emailRecipientDataContext.SaveChanges();
                 return true;
             }
             catch (Exception e)

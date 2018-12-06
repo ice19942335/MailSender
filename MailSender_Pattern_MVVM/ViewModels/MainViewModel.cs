@@ -187,7 +187,7 @@ namespace MailSender_Pattern_MVVM.ViewModels
         {
             try
             {              
-                await SendScheduled(FlowDocumentFromRichTextBox, SelectedSchedulerDateTime);
+                await SendScheduled(FlowDocumentFromRichTextBox);
             }
             catch (ArgumentNullException)
             {
@@ -379,7 +379,7 @@ namespace MailSender_Pattern_MVVM.ViewModels
                 Int32.Parse(SelectedEmailSmtp.Port));
 
             await sender.SendMailsAsync(EmailRecipients);
-            MessageBox.Show("E-mail dending compleated");
+            MessageBox.Show("E-mail sending compleated");
         }
         /// <summary>
         /// Asunc method saying to send message text to current "EmailRecipientInfo" property
@@ -421,14 +421,14 @@ namespace MailSender_Pattern_MVVM.ViewModels
             recipientsColl.Add(EmailRecipientInfo);
 
             await sender.SendMailsAsync(recipientsColl);
-            MessageBox.Show("E-mail dending compleated");
+            MessageBox.Show("E-mail sending compleated");
         }
         /// <summary>
         /// Saying to send mail Scheduled to list of email in "EmailSenders" property
         /// </summary>
         /// <param name="xmlString"></param>
         /// <returns></returns>
-        private async Task SendScheduled(string xmlString, DateTime dateTimeSelected)
+        private async Task SendScheduled(string xmlString)
         {
             if (SelectedEmailSender == null || SelectedEmailSmtp == null)
             {
@@ -467,8 +467,9 @@ namespace MailSender_Pattern_MVVM.ViewModels
                 SelectedEmailSmtp.SmtpServer,
                 Int32.Parse(SelectedEmailSmtp.Port));
 
+            MessageBox.Show($"E-mail(s) will be send {SelectedSchedulerDateTime}");
             await sender.SendMailsAsyncScheduled(EmailRecipients, SelectedSchedulerDateTime);
-            MessageBox.Show("E-mail dending compleated");
+            
         }
         #endregion SendMethod
 
