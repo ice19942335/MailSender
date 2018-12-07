@@ -10,21 +10,22 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MailSender_Pattern_MVVM.ViewModels;
 
-namespace MailSender_Pattern_MVVM
+namespace MailSender_Pattern_MVVM.Views
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Логика взаимодействия для NotifyWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class WarningWindow : Window
     {
-        public MainWindow()
+        public WarningWindow()
         {
             InitializeComponent();
             DataContext = MainViewModel.GetInstance(nameof(MainViewModel));
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e) => this.Close();
     }
 }

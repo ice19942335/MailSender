@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
@@ -9,7 +11,8 @@ using DevExpress.Mvvm;
 using MailSender_Pattern_MVVM.DB_Elements;
 using MailSender_Pattern_MVVM.Models;
 using MailSender_Pattern_MVVM.Service;
-using Xceed.Wpf.Toolkit;
+using MailSender_Pattern_MVVM.Views;
+//using Xceed.Wpf.Toolkit;
 
 namespace MailSender_Pattern_MVVM.ViewModels
 {
@@ -143,6 +146,9 @@ namespace MailSender_Pattern_MVVM.ViewModels
         public DateTime SelectedSchedulerDateTime { get; set; } = DateTime.Now;
         //RichTextBox Document text------------------------------------------------------------------------------------------------
         public string FlowDocumentFromRichTextBox { get; set; }
+        //Views--------------------------------------------------------------------------------------------------------------------
+        public string WarningText { get; set; } = "WarningText";
+        public string ErrorText { get; set; } = "ErrorText";
         #endregion
 
         #region Commands
@@ -159,7 +165,7 @@ namespace MailSender_Pattern_MVVM.ViewModels
         public ICommand SaveEmailRecipientCommand => new DelegateCommand(delegate { SaveEmailRecipient(EmailRecipientInfo); });
         public ICommand DeleteEmailRecipientCommand => new DelegateCommand(delegate { DeleteEmailRecipient(SelectedEmailRecipient); });
         public ICommand EditEmailRecipientCommand => new DelegateCommand(delegate { EditEmailRecipient(SelectedEmailRecipient); });
-        //Send Commands-------------------------------------------------------------------------------------------------------
+        //Send Commands------------------------------------------------------------------------------------------------------------
         public ICommand SendNowCommand => new DelegateCommand(async delegate
         {
             try
@@ -168,7 +174,7 @@ namespace MailSender_Pattern_MVVM.ViewModels
             }
             catch (ArgumentNullException)
             {
-                MessageBox.Show("Please, select Sender E-mail and SMTP server.");
+                Warning("Please, check selected Senders E-mail and SMTP port");
             }
 
         });
@@ -180,7 +186,7 @@ namespace MailSender_Pattern_MVVM.ViewModels
             }
             catch (ArgumentNullException)
             {
-                MessageBox.Show("Please, select Sender E-mail and SMTP server.");
+                Warning("Please, select Sender E-mail and SMTP server.");
             }
         });
         public ICommand SendSheduledCommand => new DelegateCommand(async delegate
@@ -191,9 +197,11 @@ namespace MailSender_Pattern_MVVM.ViewModels
             }
             catch (ArgumentNullException)
             {
-                MessageBox.Show("Please, select Sender E-mail and SMTP server.");
+                Warning("Please, select Sender E-mail and SMTP server.");
             }
         });
+        //Views Commands-----------------------------------------------------------------------------------------------------------
+        public ICommand CloseWarningWindowCommand => new DelegateCommand(delegate {System.Windows.Application.Current.Shutdown();});
         #endregion
 
         #region Methods
@@ -357,12 +365,13 @@ namespace MailSender_Pattern_MVVM.ViewModels
         {
             if (SelectedEmailSender == null || SelectedEmailSmtp == null)
             {
-                MessageBox.Show("You have to select Email sender and SMTP server and then try again");
+                Warning("You have to select Email sender and SMTP server and then try again");
                 return;
             }
             if (xmlString == null)
             {
-                MessageBox.Show("Message text have to be a minimum one symbol please, check message text and try again");
+                Warning("Message text have to be a minimum one symbol please, check message text and try again");
+
                 return;
             }
             var doc = (FlowDocument)XamlReader.Parse(xmlString);
@@ -390,18 +399,18 @@ namespace MailSender_Pattern_MVVM.ViewModels
         {
             if (SelectedEmailSender == null || SelectedEmailSmtp == null)
             {
-                MessageBox.Show("You have to select Email sender and SMTP server and then try again");
+                Warning("You have to select Email sender and SMTP server and then try again");
                 return;
             }
             if (xmlString == null)
             {
-                MessageBox.Show("Message text have to be a minimum one symbol please, check message text and try again");
+                Warning("Message text have to be a minimum one symbol please, check message text and try again");
                 return;
             }
 
             if (EmailRecipientInfo == null)
             {
-                MessageBox.Show("Please, select the recipient from list and try again");
+                Warning("Please, select the recipient from list and try again");
                 return;
             }
             var doc = (FlowDocument)XamlReader.Parse(xmlString);
@@ -432,24 +441,24 @@ namespace MailSender_Pattern_MVVM.ViewModels
         {
             if (SelectedEmailSender == null || SelectedEmailSmtp == null)
             {
-                MessageBox.Show("You have to select Email sender and SMTP server and then try again");
+                Warning("You have to select Email sender and SMTP server and then try again");
                 return;
             }
             if (xmlString == null)
             {
-                MessageBox.Show("Message text have to be a minimum one symbol please, check message text and try again");
+                Warning("Message text have to be a minimum one symbol please, check message text and try again");
                 return;
             }
 
             if (EmailRecipientInfo == null)
             {
-                MessageBox.Show("Please, select the recipient from list and try again");
+                Warning("Please, select the recipient from list and try again");
                 return;
             }
 
             if (SelectedSchedulerDateTime < DateTime.Now)
             {
-                MessageBox.Show("Date and time have to be in future");
+                Warning("Date and time have to be in future");
                 return;
             }
             
@@ -472,6 +481,21 @@ namespace MailSender_Pattern_MVVM.ViewModels
             
         }
         #endregion SendMethod
+
+        #region DialogsShow
+
+        /// <summary>
+        /// Creating dialog where is text with next instructions.
+        /// </summary>
+        /// <param name="message"></param>
+        private void Warning(string message)
+        {
+            WarningText = message;
+            WarningWindow warning = new WarningWindow();
+            warning.ShowDialog();
+        }
+
+        #endregion
 
         #endregion Methods 
     }
