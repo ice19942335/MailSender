@@ -1,6 +1,6 @@
 # MailSender
 
-## This is (EF) Entity Framework version.
+## EF(DB First)
 
 ## Mail Sender with LINQ to SQL you can find in Branch
 "master" https://github.com/ice19942335/MailSender/tree/master
